@@ -361,7 +361,7 @@ function submitResult(elapsedMs){
     faculty: state.faculty,
     correctCount: state.correctCount,
     heartsRemaining: state.lives,
-    elapsedMs: elapsedMs
+    elapsedSeconds: Math.floor(elapsedMs / 1000)
     // studentId ถูกเอาออกไปแล้ว
   };
 
