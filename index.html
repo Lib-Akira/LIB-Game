@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Library Quest: ภารกิจพิชิตห้องสมุด</title>
+<title>Library GAME</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
         <rect x="6" y="30" width="18" height="3" rx="1.5" fill="#E0A93A"/>
       </svg>
     </span>
-    Library Quest: ภารกิจพิชิตห้องสมุด
+    LIBRARY GAME
   </header>
 
   <!-- ============ SCREEN 1: START ============ -->
@@ -78,8 +78,8 @@
       </svg>
     </div>
 
-    <h1 class="headline headline--brand">Library Quest</h1>
-    <p class="subtext">ตอบคำถามให้ถูกต้อง<br>เพื่อพิชิตภารกิจของ<strong>ห้องสมุด</strong>!</p>
+    <h1 class="headline headline--brand">Library Game</h1>
+    <p class="subtext">ตอบคำถามให้ถูกต้อง<br>ผู้ที่ตอบคำถามเสร็จเป็น 4 อันดับแรก<strong>ได้รางวัล!</strong>!</p>
 
     <div class="rules-box">
       <p class="rules-box__title">กติกาการร่วมสนุก</p>
@@ -88,7 +88,7 @@
         <li><i class="rule-dot"></i>ตอบผิดหรือหมดเวลา หักหัวใจ 1 ดวง</li>
         <li><i class="rule-dot"></i>แต่ละข้อมีเวลาตอบ <strong>10 วินาที</strong></li>
         <li><i class="rule-dot"></i>หัวใจหมด = จบภารกิจรอบนั้น เริ่มใหม่ได้ทันที</li>
-        <li><i class="rule-dot"></i>ตอบครบ 5 ข้อโดยหัวใจไม่หมด และ<strong>เร็วที่สุด</strong> รับรางวัล!</li>
+        <li><i class="rule-dot"></i>ตอบครบ 10 ข้อโดยหัวใจไม่หมด และ<strong>เร็วที่สุด</strong> รับรางวัล!</li>
       </ul>
     </div>
 
@@ -104,13 +104,15 @@
       <label class="player-form__label" for="player-name">ชื่อ-นามสกุล</label>
       <input class="player-form__input" type="text" id="player-name" placeholder="เช่น สมชาย ใจดี" autocomplete="off">
 
-      <label class="player-form__label" for="player-id">รหัสประจำตัวนักศึกษา</label>
-      <input class="player-form__input" type="text" id="player-id" placeholder="เช่น 6712345" autocomplete="off" inputmode="numeric">
-
       <label class="player-form__label" for="player-faculty">คณะ</label>
-      <input class="player-form__input" type="text" id="player-faculty" placeholder="เช่น คณะพยาบาลศาสตร์" autocomplete="off">
+<select class="player-form__input" id="player-faculty" name="player-faculty">
+  <option value="" disabled selected>กรุณาเลือกคณะ...</option>
+  <option value="พยาบาลศาสตร์">พยาบาลศาสตร์</option>
+  <option value="จิตวิทยา">จิตวิทยา</option>
+  <option value="กายภาพบำบัด">กายภาพบำบัด</option>
+</select>
 
-      <p class="player-form__error" id="player-form-error" hidden>กรุณากรอกชื่อ-นามสกุล รหัสนักศึกษา และคณะให้ครบก่อนเริ่ม</p>
+      <p class="player-form__error" id="player-form-error" hidden>กรุณากรอกชื่อ-นามสกุล และเลือกคณะให้ครบก่อนเริ่ม</p>
     </div>
 
     <button class="btn btn--primary btn--lg" id="btn-player-continue">เริ่มตอบคำถาม (จับเวลาทันที)</button>
@@ -221,8 +223,8 @@
       </div>
       <p class="badge-tag">Mission Complete!</p>
     </div>
-    <h1 class="headline">ยินดีด้วย!</h1>
-    <p class="subtext">คุณคือผู้พิชิตห้องสมุดตัวจริง</p>
+    <h1 class="headline">เก่งมาก!</h1>
+    <p class="subtext">รอประกาศรายชื่อนะ!</p>
 
     <div class="result-summary">
       <p class="result-summary__score"><span id="complete-score">10</span> / <span id="complete-total">10</span> คะแนน</p>
@@ -233,7 +235,7 @@
 
     <div class="reward-box">
       <p class="reward-box__label">ขั้นตอนต่อไป</p>
-      <p class="reward-box__msg">กรุณามารับของรางวัลได้ที่เคาน์เตอร์ห้องสมุด</p>
+      <p class="reward-box__msg">โปรดรอประกาศรายชื่อผู้ได้รับของรางวัล</p>
     </div>
 
       <div class="btn-row">
