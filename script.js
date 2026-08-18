@@ -32,6 +32,7 @@ let state = {
   locked: false,
   playerName: '',
   studentId: '',
+  faculty: '',
   quizStartTime: 0,
   timeLeft: CONFIG.TIME_PER_QUESTION,
 };
@@ -64,18 +65,23 @@ document.getElementById('btn-start').addEventListener('click', () => {
 document.getElementById('btn-player-continue').addEventListener('click', () => {
   const nameInput = document.getElementById('player-name');
   const idInput = document.getElementById('player-id');
+  const facultyInput = document.getElementById('player-faculty');
   const errorEl = document.getElementById('player-form-error');
   const name = nameInput.value.trim();
   const id = idInput.value.trim();
+  const faculty = facultyInput.value.trim();
 
-  if(!name || !id){
+  if(!name || !id || !faculty){
     errorEl.hidden = false;
-    if(!name) nameInput.focus(); else idInput.focus();
+    if(!name) nameInput.focus();
+    else if(!id) idInput.focus();
+    else facultyInput.focus();
     return;
   }
   errorEl.hidden = true;
   state.playerName = name;
   state.studentId = id;
+  state.faculty = faculty;
   startQuest();
 });
 
@@ -331,7 +337,7 @@ function endQuest(success){
     renderHeartsInto('complete-hearts', state.lives);
     showScreen('complete');
     launchConfetti();
-    submitResult('complete', elapsedMs);
+    submitResult(elapsedMs);
   } else {
     document.getElementById('over-score').textContent = state.correctCount;
     document.getElementById('over-total').textContent = state.order.length;
@@ -341,7 +347,7 @@ function endQuest(success){
 }
 
 // ---- ส่งผลไปยัง Google Sheet (ถ้าตั้งค่า SHEET_ENDPOINT ไว้) ----
-function submitResult(status, elapsedMs){
+function submitResult(elapsedMs){
   const statusEl = document.getElementById('save-status');
 
   if(!CONFIG.SHEET_ENDPOINT){
@@ -356,12 +362,10 @@ function submitResult(status, elapsedMs){
   const payload = {
     name: state.playerName,
     studentId: state.studentId,
-    status: status,
+    faculty: state.faculty,
     correctCount: state.correctCount,
-    total: state.order.length,
     heartsRemaining: state.lives,
-    elapsedMs: elapsedMs,
-    clientTime: new Date().toISOString()
+    elapsedMs: elapsedMs
   };
 
   // ใช้ mode: 'no-cors' เพราะ Google Apps Script Web App ไม่รองรับ CORS preflight ตามปกติ
@@ -386,6 +390,7 @@ document.getElementById('btn-home').addEventListener('click', () => {
   stopTimer();
   document.getElementById('player-name').value = '';
   document.getElementById('player-id').value = '';
+  document.getElementById('player-faculty').value = '';
   showScreen('start');
 });
 
