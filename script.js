@@ -11,7 +11,7 @@ const CONFIG = {
   RANDOMIZE_QUESTIONS: false,   // false = ทุกคนเจอคำถามลำดับเดียวกัน (ยุติธรรมสำหรับแข่งเวลา)
   // วาง Web App URL จาก Google Apps Script ตรงนี้เพื่อบันทึกผลลง Google Sheet อัตโนมัติ
   // ถ้าปล่อยว่างไว้ ระบบจะยังเล่นได้ปกติ แค่ไม่ส่งข้อมูลไปที่ไหน (ดูวิธีตั้งค่าใน README.md)
-  SHEET_ENDPOINT: ''
+  SHEET_ENDPOINT: 'https://script.google.com/a/macros/slc.ac.th/s/AKfycbwHHxUqPkjQmNGb9b4IFqDRXsogsz68mUYQt-dB2ybzSIy16V2G5SttGKHkVtLZFuQQrA/exec'
 };
 
 const MAX_LIVES = CONFIG.MAX_LIVES;
