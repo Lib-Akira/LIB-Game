@@ -63,16 +63,16 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 document.getElementById('btn-player-continue').addEventListener('click', () => {
   const nameInput = document.getElementById('player-name');
-  const idInput = document.getElementById('player-id');
   const facultyInput = document.getElementById('player-faculty');
   const errorEl = document.getElementById('player-form-error');
+  
   const name = nameInput.value.trim();
   const faculty = facultyInput.value.trim();
 
-  if(!name || !id || !faculty){
+  // ปรับเงื่อนไขเช็คแค่ชื่อกับคณะ
+  if(!name || !faculty){
     errorEl.hidden = false;
     if(!name) nameInput.focus();
-    else if(!id) idInput.focus();
     else facultyInput.focus();
     return;
   }
@@ -362,6 +362,7 @@ function submitResult(elapsedMs){
     correctCount: state.correctCount,
     heartsRemaining: state.lives,
     elapsedMs: elapsedMs
+    // studentId ถูกเอาออกไปแล้ว
   };
 
   // ใช้ mode: 'no-cors' เพราะ Google Apps Script Web App ไม่รองรับ CORS preflight ตามปกติ
@@ -385,7 +386,6 @@ document.getElementById('btn-retry').addEventListener('click', startQuest);
 document.getElementById('btn-home').addEventListener('click', () => {
   stopTimer();
   document.getElementById('player-name').value = '';
-  document.getElementById('player-id').value = '';
   document.getElementById('player-faculty').value = '';
   showScreen('start');
 });
