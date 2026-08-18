@@ -31,7 +31,6 @@ let state = {
   correctCount: 0,
   locked: false,
   playerName: '',
-  studentId: '',
   faculty: '',
   quizStartTime: 0,
   timeLeft: CONFIG.TIME_PER_QUESTION,
@@ -80,7 +79,6 @@ document.getElementById('btn-player-continue').addEventListener('click', () => {
   }
   errorEl.hidden = true;
   state.playerName = name;
-  state.studentId = id;
   state.faculty = faculty;
   startQuest();
 });
@@ -361,7 +359,6 @@ function submitResult(elapsedMs){
 
   const payload = {
     name: state.playerName,
-    studentId: state.studentId,
     faculty: state.faculty,
     correctCount: state.correctCount,
     heartsRemaining: state.lives,
