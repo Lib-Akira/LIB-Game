@@ -67,7 +67,6 @@ document.getElementById('btn-player-continue').addEventListener('click', () => {
   const facultyInput = document.getElementById('player-faculty');
   const errorEl = document.getElementById('player-form-error');
   const name = nameInput.value.trim();
-  const id = idInput.value.trim();
   const faculty = facultyInput.value.trim();
 
   if(!name || !id || !faculty){
