@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Quest — กระดานผู้ชนะแบบเรียลไทม์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #10182E;
+    --bg-mid: #1B2648;
+    --panel: #F0F6FC;
+    --ink: #1B2233;
+    --gold: #F5C24C;
+    --silver: #C7D3E0;
+    --bronze: #D8955A;
+    --blue: #3E8EDE;
+    --green: #4FA97A;
+    --coral: #E2604F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background: var(--bg-deep);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 2px, transparent 2px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 2px, transparent 2px);
+    background-size: 32px 32px;
+    font-family:'Sarabun', sans-serif;
+    color:#fff;
+    padding: 40px 24px;
+  }
+  .wrap{ max-width: 900px; margin: 0 auto; }
+  .title{
+    font-family:'Press Start 2P', sans-serif;
+    font-size: clamp(18px, 3.2vw, 30px);
+    text-align:center;
+    color: var(--gold);
+    text-shadow: 3px 3px 0 var(--ink);
+    margin: 0 0 8px;
+    line-height:1.6;
+  }
+  .subtitle{
+    text-align:center;
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size: 15px;
+    color: #AEC3E8;
+    margin: 0 0 32px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .status{
+    text-align:center;
+    font-size:13px;
+    color:#7C8CB0;
+    margin-bottom:24px;
+    font-family:'Chakra Petch',sans-serif;
+  }
+  .status--error{ color: var(--coral); }
+
+  .list{ display:flex; flex-direction:column; gap:14px; }
+  .row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background: var(--panel);
+    border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.35);
+    padding: 16px 22px;
+    color: var(--ink);
+    animation: rowIn .3s steps(4);
+  }
+  @keyframes rowIn{
+    0%{ opacity:0; transform: translateY(-10px); }
+    100%{ opacity:1; transform: translateY(0); }
+  }
+  .row--winner{ background: #FFF7E0; border-color: var(--gold); }
+  .rank{
+    font-family:'Press Start 2P', sans-serif;
+    font-size: 18px;
+    width: 56px;
+    flex-shrink:0;
+    text-align:center;
+  }
+  .rank--1{ color:#B8860B; }
+  .rank--2{ color:#6B7280; }
+  .rank--3{ color:#A9642A; }
+  .rank--4{ color: var(--blue); }
+  .rank--5{ color: var(--green); }
+  .medal{ font-size:26px; width:40px; text-align:center; flex-shrink:0; }
+  .info{ flex:1; }
+  .info__name{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:700;
+    font-size: 19px;
+    color: var(--ink);
+    margin:0 0 2px;
+  }
+  .info__faculty{
+    font-size: 13.5px;
+    color:#56677A;
+    margin:0;
+  }
+  .stat{
+    text-align:right;
+    font-family:'Chakra Petch',sans-serif;
+    flex-shrink:0;
+  }
+  .stat__score{ font-weight:700; font-size:15px; color: var(--green); }
+  .stat__time{ font-size:12px; color:#56677A; margin-top:2px; }
+
+  .empty{
+    text-align:center;
+    padding: 60px 20px;
+    font-family:'Chakra Petch',sans-serif;
+    color:#7C8CB0;
+    font-size:16px;
+    border: 3px dashed #3B4A70;
+  }
+
+  .footer-note{
+    text-align:center;
+    font-size:12px;
+    color:#5A6A8C;
+    margin-top:32px;
+    font-family:'Chakra Petch',sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1 class="title">🏆 LIBRARY QUEST 🏆</h1>
+  <p class="subtitle">กระดานผู้พิชิตภารกิจ — เรียลไทม์</p>
+  <p class="status" id="status">กำลังโหลดข้อมูล...</p>
+
+  <div id="list" class="list"></div>
+
+  <p class="footer-note">อัปเดตอัตโนมัติทุก 3 วินาที • เรียงตามลำดับผู้ที่ส่งผลถึงก่อน (เร็วที่สุด)</p>
+</div>
+
+<script>
+  // ต้องเป็น Web App URL เดียวกับ CONFIG.SHEET_ENDPOINT ในไฟล์ script.js ของเกม
+  const ENDPOINT = 'https://script.google.com/a/macros/slc.ac.th/s/AKfycbwHHxUqPkjQmNGb9b4IFqDRXsogsz68mUYQt-dB2ybzSIy16V2G5SttGKHkVtLZFuQQrA/exec';
+  const REFRESH_MS = 3000;
+  const MAX_WINNERS = 5; // จำนวนคนที่ถือว่า "ได้รางวัล" — ไฮไลต์แถวเหล่านี้เป็นพิเศษ
+  const MEDALS = ['🥇', '🥈', '🥉', '🎖️', '🎖️'];
+
+  async function refreshLeaderboard(){
+    const statusEl = document.getElementById('status');
+    try {
+      const res = await fetch(ENDPOINT + '?action=list', { cache: 'no-store' });
+      const data = await res.json();
+      render(data.winners || []);
+      statusEl.textContent = 'อัปเดตล่าสุด: ' + new Date().toLocaleTimeString('th-TH');
+      statusEl.classList.remove('status--error');
+    } catch (err) {
+      statusEl.textContent = 'เชื่อมต่อไม่ได้ กำลังลองใหม่...';
+      statusEl.classList.add('status--error');
+    }
+  }
+
+  function render(winners){
+    const listEl = document.getElementById('list');
+    if(!winners.length){
+      listEl.innerHTML = '<div class="empty">ยังไม่มีผู้พิชิตภารกิจ... กำลังรอผู้เข้าแข่งขันคนแรก!</div>';
+      return;
+    }
+    listEl.innerHTML = winners.map((w, i) => {
+      const rank = i + 1;
+      const isWinner = rank <= MAX_WINNERS;
+      const medal = MEDALS[i] || '';
+      return `
+        <div class="row ${isWinner ? 'row--winner' : ''}">
+          <div class="rank rank--${rank <= 5 ? rank : ''}">${rank}</div>
+          <div class="medal">${medal}</div>
+          <div class="info">
+            <p class="info__name">${escapeHtml(w.name || '-')}</p>
+            <p class="info__faculty">${escapeHtml(w.faculty || '-')}</p>
+          </div>
+          <div class="stat">
+            <div class="stat__score">${w.correctCount ?? '-'} ข้อ</div>
+            <div class="stat__time">${formatTime(w.elapsedSeconds)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function formatTime(sec){
+    if(sec === undefined || sec === null || sec === '') return '';
+    const s = Number(sec);
+    const mm = String(Math.floor(s / 60)).padStart(2, '0');
+    const ss = String((s % 60).toFixed(1)).padStart(4, '0');
+    return `${mm}:${ss}`;
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  refreshLeaderboard();
+  setInterval(refreshLeaderboard, REFRESH_MS);
+</script>
+</body>
+</html>
